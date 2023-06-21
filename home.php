@@ -1,8 +1,7 @@
-<?php
-/**
- * Template Name: Archive Page
- */ ?>
-<?php get_header() ?>
+<?php get_header();
+$fields = get_fields();
+var_dump($fields);
+?>
 <?php var_dump(have_posts()) ?>
 <?php if (have_posts()) : ?>
     <div class="row">
