@@ -1,0 +1,15 @@
+/*
+Theme Name: White Label
+Theme URI: http://localhost:10004/
+Author: Jordan Nguyen
+Author URI: http://localhost:10004/
+Description: Le theme de marque blanche
+Version: 1.0
+*/
+
+body {
+    background: #FFFFFF;
+    font-family: "Source Sans Pro";
+    color: #4b5157;
+    margin: 0 auto;
+  }
