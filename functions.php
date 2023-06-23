@@ -40,6 +40,17 @@ function montheme_menu_link_class ($attrs)
     return $attrs;
 }
 
+function montheme_disable_block_editor_for_post_types() {
+    // Remplacez "post" par le type de publication pour lequel vous souhaitez désactiver l'éditeur de blocs.
+    $post_types = array( 'post', 'page', 'custom_post_type' );
+
+    foreach ( $post_types as $post_type ) {
+        // Désactive l'éditeur de blocs pour le type de publication spécifié.
+        remove_post_type_support( $post_type, 'editor' );
+    }
+}
+
+add_action( 'init', 'montheme_disable_block_editor_for_post_types' );
 add_action('after_setup_theme', 'montheme_supports');
 add_action('wp_enqueue_scripts', 'montheme_register_assets');
 add_filter('document_title_separator', 'montheme_title_separator');
