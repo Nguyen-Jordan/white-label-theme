@@ -1,5 +1,5 @@
 <?php $service = get_field('second_preview_service_bloc') ?>
-<section class="my-5">
+<section class="my-5 py-2">
     <div class="row d-flex justify-content-center">
         <div class="col-5 m-auto">
             <img src="<?= $service['img'] ?>" alt="" style="width: 80%; height: auto">

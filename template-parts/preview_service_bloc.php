@@ -1,6 +1,6 @@
 <?php $service = get_field('preview_service_bloc') ?>
-<section class="my-5">
-    <div class="row d-flex justify-content-evenly">
+<section class="my-5 py-2">
+    <div class="row d-flex justify-content-evenly my-5">
         <div class="col-5">
             <h1><?= $service['title'] ?></h1>
             <p><?= $service['text'] ?></p>
