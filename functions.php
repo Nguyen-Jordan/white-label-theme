@@ -114,3 +114,85 @@ function theme_name_widgets_init() {
     ) );
 }
 add_action( 'widgets_init', 'theme_name_widgets_init' );
+
+// Api : https://developer.wordpress.org/rest-api
+add_action('rest_api_init', function () {
+    register_rest_route('montheme/v1', '/demo', [
+        'methods' => 'GET',
+        'callback' => function () {
+        $response =new WP_REST_Response(['success' => 'Bonjour tout le monde']);
+        $response->set_status(201);
+        return $response;
+        }
+    ]);
+});
+
+add_action('rest_api_init', 'montheme_custom_stats_endpoint'); // Ajouter un nouveau point de terminaison "custom-stats"
+
+function montheme_custom_stats_endpoint() {
+    register_rest_route('montheme/v1', '/custom-stats', [
+        'methods' => 'GET',
+        'callback' => 'get_custom_stats'
+    ]);
+}
+
+// Fonction de rappel pour le point de terminaison "custom-stats"
+function get_custom_stats($request) {
+    // Récupérer les statistiques personnalisées
+    $stats = [
+        'totalPosts' => wp_count_posts()->publish, // Nombre total d'articles
+        'totalUsers' => count_users()['total_users'], // Nombre total d'utilisateurs enregistrés
+        'mostRecentPost' => get_most_recent_post(), // Détails du post le plus récent
+        'recentPosts' => get_recent_posts()  // Liste des articles récents
+    ];
+    return rest_ensure_response($stats);
+}
+
+// Fonction pour récupérer les détails du post le plus récent
+function get_most_recent_post() {
+    $args = [
+        'posts_per_page' => 1,
+        'orderby' => 'date',
+        'order' => 'DESC'
+    ];
+    $query = new WP_Query($args);
+
+    if ($query->have_posts()) {
+        $post = $query->posts[0];
+        $post_data = [
+            'id' => $post-> ID,
+            'title' => $post->post_title,
+            'views' => get_post_meta($post->ID, 'views', true),
+            'likes' => get_post_meta($post->ID, 'likes', true)
+        ];
+        return $post_data;
+    }
+
+    return null;
+}
+
+// Fonction pour récupérer la liste des articles récents
+function get_recent_posts() {
+    $args = [
+        'posts_per_page' => 5,
+        'order_by' => 'date',
+        'order' => 'DESC'
+    ];
+
+    $query = new WP_Query($args);
+    $posts = [];
+
+    if ($query->have_posts()) {
+        foreach ($query->posts as $post) {
+            $post_data = array(
+                'id' => $post->ID,
+                'title' => $post->post_title,
+                'date' => $post->post_date
+            );
+
+            $posts[] = $post_data;
+        }
+    }
+
+    return $posts;
+}
